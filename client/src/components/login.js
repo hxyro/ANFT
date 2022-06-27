@@ -13,11 +13,10 @@ export function Login() {
         <div className="popUpContainer">
             <div>
                 <div>
-                    <h1>Login</h1>
+                    <h2 className="headText">Login</h2>
                 </div>
-                <div>
+                <div className="formContainer">
                     <form>
-                        <h3>Error</h3>
                         <div>
                             <input
                                 value={email}
@@ -38,7 +37,7 @@ export function Login() {
                             Cancel
                         </button>
                         <button type="button" onClick={onSubmit}>
-                            Sign Up
+                            Login
                         </button>
                     </form>
                 </div>

@@ -12,14 +12,13 @@ export function SignUp() {
         setCpassword('')
     }
     return (
-        <div className="App">
+        <div className="popUpContainer">
             <div>
                 <div>
-                    <h1>Register</h1>
+                    <h2 className="headText">Sign Up</h2>
                 </div>
-                <div>
+                <div className="formContainer">
                     <form>
-                        <h3>Error</h3>
                         <div>
                             <input
                                 value={email}
