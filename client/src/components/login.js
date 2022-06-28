@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function Login() {
+export function Login({ off }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -8,6 +8,7 @@ export function Login() {
     const cancel = () => {
         setEmail('')
         setPassword('')
+        off()
     }
     return (
         <div className="popUpContainer">
@@ -19,6 +20,7 @@ export function Login() {
                     <form>
                         <div>
                             <input
+                                required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 type="email"
@@ -27,6 +29,7 @@ export function Login() {
                         </div>
                         <div>
                             <input
+                                required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 type="password"
@@ -36,9 +39,7 @@ export function Login() {
                         <button type="button" onClick={cancel}>
                             Cancel
                         </button>
-                        <button type="button" onClick={onSubmit}>
-                            Login
-                        </button>
+                        <button type="submit">Login</button>
                     </form>
                 </div>
             </div>
