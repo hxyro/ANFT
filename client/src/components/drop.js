@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '../utils/cropImage'
 
-export function Drop({ off }) {
+export function Drop({ off, success }) {
     const inputref = useRef()
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
@@ -11,6 +11,8 @@ export function Drop({ off }) {
     const [zoom, setZoom] = useState(1)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
     const [croppedImage, setCroppedImage] = useState(null)
+    const [error, setError] = useState(null)
+
     const onCropComplete = useCallback((_croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels)
     }, [])
@@ -55,12 +57,54 @@ export function Drop({ off }) {
         return new File([u8arr], filename, { type: mime })
     }
 
-    const onSubmit = () => {}
     const cancel = () => {
         setName('')
         setPrice(0)
         setCroppedImage(null)
         off()
+    }
+    const onSubmit = async () => {
+        const img64 = await convertBlobToBase64(croppedImage)
+        const img = dataURLtoFile(img64, 'yehh')
+        try {
+            const url = await fetch('http://localhost:8080/get/s3url').then(
+                async (res) => await res.json()
+            )
+            if (url) {
+                fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                    body: img,
+                })
+
+                const imageurl = url.split('?')[0]
+                console.log(imageurl)
+
+                const response = await fetch('http://localhost:8080/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageurl,
+                        price,
+                        name,
+                        user: 'kek',
+                    }),
+                }).then(async (res) => await res.json())
+
+                console.log(response)
+                if (response.success) {
+                    success()
+                } else {
+                    setError(response.error)
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
     return (
         <div className="popUpContainerDrop">
@@ -86,6 +130,11 @@ export function Drop({ off }) {
             ) : (
                 <>
                     <div className="formContainer">
+                        {error ? (
+                            <div className="errorContainer">
+                                <p>{error}</p>
+                            </div>
+                        ) : null}
                         {croppedImage ? (
                             <div className="box">
                                 <img src={croppedImage} alt="" />

@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
-export function Login({ off }) {
+export function Login({ off, success }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState(null)
 
     const onSubmit = () => {}
     const cancel = () => {
@@ -10,14 +11,39 @@ export function Login({ off }) {
         setPassword('')
         off()
     }
+    const loginUser = async (event) => {
+        event.preventDefault()
+        const response = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        }).then(async (res) => await res.json())
+        if (response.success) {
+            success()
+        } else {
+            setError(response.error)
+        }
+        console.log(response)
+    }
     return (
         <div className="popUpContainer">
             <div>
                 <div>
+                    {error ? (
+                        <div className="errorContainer">
+                            <p>{error}</p>
+                        </div>
+                    ) : null}
+
                     <h2 className="headText">Login</h2>
                 </div>
                 <div className="formContainer">
-                    <form>
+                    <form onSubmit={loginUser}>
                         <div>
                             <input
                                 required

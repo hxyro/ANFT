@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 export function Nav({ onLogin, onSignUp, onDrop, onLogout, isLogin }) {
     return (
         <nav>

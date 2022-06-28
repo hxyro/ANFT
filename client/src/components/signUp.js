@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
-export function SignUp({ off }) {
+export function SignUp({ off, success }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [cpassword, setCpassword] = useState('')
+    const [error, setError] = useState(null)
 
     const onCancel = () => {
         setEmail('')
@@ -11,14 +12,37 @@ export function SignUp({ off }) {
         setCpassword('')
         off()
     }
+    const registerUser = async (event) => {
+        event.preventDefault()
+        const response = await fetch('http://localhost:8080/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        }).then(async (res) => await res.json())
+        if (response.success) {
+            success()
+        } else {
+            setError(response.error)
+        }
+    }
     return (
         <div className="popUpContainer">
             <div>
                 <div>
+                    {error ? (
+                        <div className="errorContainer">
+                            <p>{error}</p>
+                        </div>
+                    ) : null}
                     <h2 className="headText">Sign Up</h2>
                 </div>
                 <div className="formContainer">
-                    <form>
+                    <form onSubmit={registerUser}>
                         <div>
                             <input
                                 required
@@ -49,7 +73,11 @@ export function SignUp({ off }) {
                         <button type="button" onClick={onCancel}>
                             Cancel
                         </button>
-                        <button type="submit">Sign Up</button>
+                        {password ? (
+                            password === cpassword ? (
+                                <button type="submit">Sign Up</button>
+                            ) : null
+                        ) : null}
                     </form>
                 </div>
             </div>

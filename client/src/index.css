@@ -41,7 +41,8 @@ button:focus {
     justify-content: center;
 }
 .formContainer input {
-    margin: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     outline: none;
     border: none;
     background: none;
@@ -50,6 +51,7 @@ button:focus {
     font-family: var(--sans);
     font-size: 20px;
     width: 100%;
+    max-width: 300px;
 }
 .formContainer button {
     padding-left: 20px;
@@ -78,7 +80,7 @@ nav {
     justify-content: center;
     width: 100%;
     height: auto;
-    background-color: #00000000;
+    background-color: #00000076;
     z-index: 30;
 }
 nav .left {
@@ -135,13 +137,14 @@ nav .mid button {
     height: 100%;
     display: flex;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0);
-    z-index: -1;
+    flex-wrap: wrap;
+    background-color: rgba(0, 0, 0, 0.671);
+    z-index: 5;
 }
 .popUpContainer {
     margin: auto 0;
-    width: 25%;
-    height: 45%;
+    width: 400px;
+    height: 400px;
     border-radius: 20px;
     padding: 20px;
     display: flex;
@@ -155,8 +158,9 @@ nav .mid button {
 }
 .popUpContainerDrop {
     margin: auto 0;
-    width: 30%;
-    height: 60%;
+    width: 500px;
+    height: 800px;
+    max-height: 65%;
     border-radius: 20px;
     padding: 20px;
     display: flex;
@@ -166,7 +170,7 @@ nav .mid button {
     font-family: var(--sans);
     text-align: center;
     backdrop-filter: blur(1px);
-    z-index: 1;
+    z-index: 10;
 }
 .popUpContainer h2 {
     color: aliceblue;
@@ -190,11 +194,14 @@ nav .mid button {
     padding-right: 20px;
     border-radius: 5px;
     border: none;
-    background-color: #d5d8df;
+    background-color: #cbd1dd;
     color: #090625;
     height: 45px;
     margin: 10px;
+    font-family: var(--sans);
+    font-style: bold;
     cursor: pointer;
+    z-index: 5;
 }
 .selectbutton {
     margin: 50px;
@@ -206,10 +213,83 @@ nav .mid button {
     height: auto;
 }
 .box img {
-    border-radius: 20px;
-    margin-bottom: 30px;
-    margin-top: 20px;
-    width: 480px;
-    height: 270px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    width: 448px;
+    height: 252px;
     object-fit: cover;
+}
+.errorContainer {
+    width: 100%;
+    border-radius: 5px;
+    background-color: rgba(255, 47, 47, 0.429);
+    color: aliceblue;
+    font-family: var(--sans);
+    font-size: 20px;
+}
+.errorContainer p {
+    padding: 5px;
+}
+.Container2 {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: 500px;
+    top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: -1;
+}
+.nftContainer {
+    margin: 30px;
+    padding: 15px;
+    height: auto;
+    max-width: 500px;
+    border: 2px solid white;
+    border-radius: 20px;
+    z-index: -1;
+}
+.nftContainer .user {
+    padding: 4px;
+    color: aliceblue;
+}
+
+.nftContainer .price {
+    display: flex;
+    justify-content: center;
+    color: aliceblue;
+}
+.nftContainer .price p {
+    background-color: rgba(0, 255, 132, 0.598);
+    border-radius: 5px;
+    padding: 8px;
+    margin: auto 10px;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+.nftContainer .name {
+    height: 35px;
+    display: flex;
+    background-color: rgba(116, 243, 255, 0.518);
+    border-radius: 10px;
+    justify-content: center;
+    padding-left: 2px;
+    color: aliceblue;
+}
+.nftContainer .price .cbtn {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #cbd1dd;
+    color: #090625;
+    height: 45px;
+    margin: 10px;
+    font-family: var(--sans);
+    font-style: bold;
+    cursor: pointer;
 }
