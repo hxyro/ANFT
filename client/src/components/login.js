@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function Login({ off, success }) {
+export function Login({ off, success, loginDetails }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -24,6 +24,7 @@ export function Login({ off, success }) {
             }),
         }).then(async (res) => await res.json())
         if (response.success) {
+            loginDetails(email)
             success()
         } else {
             setError(response.error)

@@ -17,6 +17,19 @@ app.use(express.json())
 app.disable('x-powered-by')
 app.use(urlencoded({ extended: true }))
 
+app.post('/bid', async (req, res) => {
+    const { id } = req.body
+    const isanft = await AnftDb.findById(id)
+    if (isanft) {
+        const anft = await AnftDb.findByIdAndUpdate(id, {
+            price: isanft.price + 10,
+        })
+        console.log(anft)
+        res.json({ status: 'ok', success: true }).end()
+    } else {
+        res.json({ status: 'error', success: false }).end()
+    }
+})
 app.post('/login', async (req, res) => {
     const { email, password } = req.body
     if (email && password) {
@@ -65,7 +78,7 @@ app.post('/add', async (req, res) => {
 })
 
 app.get('/', async (req, res) => {
-    const data = await AnftDb.find()
+    const data = (await AnftDb.find()).reverse()
     console.log(data)
 
     if (data) {

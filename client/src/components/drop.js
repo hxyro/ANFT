@@ -2,7 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import Cropper from 'react-easy-crop'
 import getCroppedImg from '../utils/cropImage'
 
-export function Drop({ off, success }) {
+export function Drop({ off, success, user }) {
     const inputref = useRef()
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
@@ -63,6 +63,7 @@ export function Drop({ off, success }) {
         setCroppedImage(null)
         off()
     }
+
     const onSubmit = async () => {
         const img64 = await convertBlobToBase64(croppedImage)
         const img = dataURLtoFile(img64, 'yehh')
@@ -91,7 +92,7 @@ export function Drop({ off, success }) {
                         imageUrl: imageurl,
                         price,
                         name,
-                        user: 'kek',
+                        user,
                     }),
                 }).then(async (res) => await res.json())
 

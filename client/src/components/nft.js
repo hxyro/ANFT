@@ -1,15 +1,18 @@
-export function Nft({ imageSrc, user, price, name, id }) {
+import axios from 'axios'
+export function Nft({ imageSrc, user, priceref, name, id, index, state }) {
     const bid = async () => {
-        const response = await fetch('http://localhost:8080/bid', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                price: price + 10,
-            }),
-        }).then(async (res) => await res.json())
-        console.log(response)
+        axios
+            .post('http://localhost:8080/bid', {
+                price: priceref.current[index].price,
+                id,
+            })
+            .then(({ data }) => {
+                const { success } = data
+                if (success) {
+                    console.log(priceref.current[index].price)
+                }
+            })
+            .catch((error) => console.log(error))
     }
     return (
         <div className="nftContainer">
@@ -23,10 +26,16 @@ export function Nft({ imageSrc, user, price, name, id }) {
                 <p>Owner: {user}</p>
             </div>
             <div className="price">
-                <button className="cbtn" onClick={bid}>
+                <button
+                    className="cbtn"
+                    onClick={() => {
+                        priceref.current[index].price += 10
+                        bid()
+                    }}
+                >
                     bid
                 </button>
-                <p>{price}$</p>
+                <p>{priceref.current[index].price}$</p>
             </div>
         </div>
     )

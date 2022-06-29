@@ -1,12 +1,12 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { SignUp } from './components/signUp'
 import { Login } from './components/login'
 import { Nav } from './components/nav'
 import { Loading } from './components/loading'
 import { Drop } from './components/drop'
-import { Nft } from './components/nft'
+import { Nft } from './components/anft'
 import axios from 'axios'
 
 const api = axios.create({
@@ -14,11 +14,14 @@ const api = axios.create({
 })
 
 function App() {
+    const bidPrice = useRef([])
     const [showSignUp, setShowSignUp] = useState(false)
     const [showLogin, setShowLogin] = useState(false)
     const [isLogin, setIsLogin] = useState(null)
     const [showDrop, setShowDrop] = useState(false)
     const [data, setData] = useState([])
+    const [user, setuser] = useState('')
+    const [st, setSt] = useState(0)
 
     const toggleOff = () => {
         setShowLogin(false)
@@ -36,11 +39,12 @@ function App() {
         setShowDrop(false)
         setIsLogin(true)
     }
-    const dropSuccess = () => {
+    const dropSuccess = async () => {
         setShowLogin(false)
         setShowSignUp(false)
         setShowDrop(false)
         setIsLogin(true)
+        setSt((a) => a + 1)
     }
     const toggleOnSignUp = () => {
         setShowLogin(false)
@@ -60,24 +64,14 @@ function App() {
         setIsLogin(false)
     }
 
-    function getData() {
-        const response = fetch('http://localhost:8080/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(async (res) => res.json())
-            .then((res) => setData(res.data))
-    }
-
     useEffect(() => {
         api.get('/').then(({ data }) => {
             const { anft } = data
-            console.log(anft)
+            bidPrice.current = []
+            anft.map(({ price, _id }) => bidPrice.current.push({ price: price, id: _id }))
             setData(anft)
         })
-    }, [])
+    }, [st])
 
     return (
         <div>
@@ -95,24 +89,26 @@ function App() {
             ) : null}
             {showLogin ? (
                 <div className="Container">
-                    <Login off={toggleOff} success={loginSuccess} />
+                    <Login off={toggleOff} success={loginSuccess} loginDetails={setuser} />
                 </div>
             ) : null}
             {showDrop ? (
                 <div className="Container">
-                    <Drop off={toggleOff} success={dropSuccess} />
+                    <Drop off={toggleOff} success={dropSuccess} user={user} />
                 </div>
             ) : null}
 
             <div className="Container2">
-                {data.map(({ imageUrl, name, price, user, _id }) => (
+                {data.map(({ imageUrl, name, user, _id }, index) => (
                     <Nft
+                        index={index}
+                        priceref={bidPrice}
                         imageSrc={imageUrl}
                         user={user}
-                        price={price}
                         key={_id}
                         name={name}
                         id={_id}
+                        log={isLogin}
                     />
                 ))}
             </div>
@@ -138,7 +134,7 @@ function App() {
                         />
                         <OrbitControls
                             enablePan={false}
-                            enableZoom={true}
+                            enableZoom={false}
                             enableRotate={true}
                             rotateSpeed={0.32}
                             autoRotate={true}
