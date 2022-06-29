@@ -9,7 +9,7 @@ export class Nft extends Component {
     bid() {
         const { priceref, id, index } = this.props
         axios
-            .post('http://localhost:8080/bid', {
+            .post('http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/bid', {
                 id,
             })
             .then(({ data }) => {

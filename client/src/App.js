@@ -10,7 +10,7 @@ import { Nft } from './components/anft'
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: 'http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/',
 })
 
 function App() {

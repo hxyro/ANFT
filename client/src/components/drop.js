@@ -68,9 +68,9 @@ export function Drop({ off, success, user }) {
         const img64 = await convertBlobToBase64(croppedImage)
         const img = dataURLtoFile(img64, 'yehh')
         try {
-            const url = await fetch('http://localhost:8080/get/s3url').then(
-                async (res) => await res.json()
-            )
+            const url = await fetch(
+                'http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/get/s3url'
+            ).then(async (res) => await res.json())
             if (url) {
                 fetch(url, {
                     method: 'PUT',
@@ -83,18 +83,21 @@ export function Drop({ off, success, user }) {
                 const imageurl = url.split('?')[0]
                 console.log(imageurl)
 
-                const response = await fetch('http://localhost:8080/add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        imageUrl: imageurl,
-                        price,
-                        name,
-                        user,
-                    }),
-                }).then(async (res) => await res.json())
+                const response = await fetch(
+                    'http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/add',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            imageUrl: imageurl,
+                            price,
+                            name,
+                            user,
+                        }),
+                    }
+                ).then(async (res) => await res.json())
 
                 console.log(response)
                 if (response.success) {
