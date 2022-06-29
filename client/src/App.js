@@ -21,7 +21,6 @@ function App() {
     const [showDrop, setShowDrop] = useState(false)
     const [data, setData] = useState([])
     const [user, setuser] = useState('')
-    const [st, setSt] = useState(0)
 
     const toggleOff = () => {
         setShowLogin(false)
@@ -39,12 +38,21 @@ function App() {
         setShowDrop(false)
         setIsLogin(true)
     }
+    const sleep = (milliseconds) => {
+        return new Promise((resolve) => setTimeout(resolve, milliseconds))
+    }
     const dropSuccess = async () => {
         setShowLogin(false)
         setShowSignUp(false)
         setShowDrop(false)
         setIsLogin(true)
-        setSt((a) => a + 1)
+        await sleep(5000)
+        api.get('/').then(({ data }) => {
+            const { anft } = data
+            bidPrice.current = []
+            anft.map(({ price, _id }) => bidPrice.current.push({ price: price, id: _id }))
+            setData(anft)
+        })
     }
     const toggleOnSignUp = () => {
         setShowLogin(false)
@@ -71,7 +79,7 @@ function App() {
             anft.map(({ price, _id }) => bidPrice.current.push({ price: price, id: _id }))
             setData(anft)
         })
-    }, [st])
+    }, [])
 
     return (
         <div>

@@ -293,3 +293,15 @@ p {
     font-style: bold;
     cursor: pointer;
 }
+
+@media (max-width: 800px) {
+    .popUpContainerDrop {
+        width: 400px;
+        height: 800px;
+    }
+    .box img {
+        width: 352px;
+        height: 198px;
+        object-fit: cover;
+    }
+}

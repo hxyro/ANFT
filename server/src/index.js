@@ -24,7 +24,6 @@ app.post('/bid', async (req, res) => {
         const anft = await AnftDb.findByIdAndUpdate(id, {
             price: isanft.price + 10,
         })
-        console.log(anft)
         res.json({ status: 'ok', success: true }).end()
     } else {
         res.json({ status: 'error', success: false }).end()
