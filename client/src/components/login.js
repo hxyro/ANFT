@@ -13,19 +13,16 @@ export function Login({ off, success, loginDetails }) {
     }
     const loginUser = async (event) => {
         event.preventDefault()
-        const response = await fetch(
-            'http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/login',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            }
-        ).then(async (res) => await res.json())
+        const response = await fetch('https://ancient-scrubland-28193.herokuapp.com/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        }).then(async (res) => await res.json())
         if (response.success) {
             loginDetails(email)
             success()

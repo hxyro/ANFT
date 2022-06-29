@@ -14,19 +14,16 @@ export function SignUp({ off, success }) {
     }
     const registerUser = async (event) => {
         event.preventDefault()
-        const response = await fetch(
-            'http://ec2-54-189-18-6.us-west-2.compute.amazonaws.com:3000/signup',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                }),
-            }
-        ).then(async (res) => await res.json())
+        const response = await fetch('https://ancient-scrubland-28193.herokuapp.com/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                password,
+            }),
+        }).then(async (res) => await res.json())
         if (response.success) {
             success()
         } else {
